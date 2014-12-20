@@ -5,6 +5,14 @@ set(PaperCommon_SOURCES
 	QRCode.cpp
 	QRCode.h
 
+	Compression/LZMA.cpp
+	Compression/LZMA.h
+
+	Util/IO.cpp
+	Util/IO.h
+	Util/Memstream.cpp
+	Util/Memstream.h
+
 )
 
 add_library(PaperCommon STATIC

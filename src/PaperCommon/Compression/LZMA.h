@@ -16,32 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Functionality.h"
+#ifndef PAPER_COMPRESSION_LZMA_H
+#define PAPER_COMPRESSION_LZMA_H
 
-#include "PaperCommon/Compression/LZMA.h"
-#include "PaperCommon/Util/IO.h"
+#include <cstddef>
+#include <cstdint>
+#include <memory>
 
 namespace paper
 {
-	std::vector<std::shared_ptr<QRCode>> encode(const std::string &path)
+	namespace compression
 	{
-		// Load the contents of the given file.
-
-		std::shared_ptr<uint8_t> buf(nullptr);
-		std::size_t bufSize = util::io::loadFile(buf, path);
-
-		// Compress the given file's contents.
-
-		{
-			std::shared_ptr<uint8_t> compressed;
-			std::size_t compressedSize = compression::lzmaCompress(
-				compressed, buf.get(), bufSize);
-			buf = compressed;
-			bufSize = compressedSize;
-		}
-
-
-
-		return std::vector<std::shared_ptr<QRCode>>();
+		std::size_t lzmaCompress(std::shared_ptr<uint8_t> &,
+			const uint8_t *, std::size_t);
+		std::size_t lzmaDecompress(std::shared_ptr<uint8_t> &,
+			const uint8_t *, std::size_t);
 	}
 }
+
+#endif

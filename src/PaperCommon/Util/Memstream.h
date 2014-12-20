@@ -16,32 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Functionality.h"
+#ifndef PAPER_UTIL_MEMSTREAM_H
+#define PAPER_UTIL_MEMSTREAM_H
 
-#include "PaperCommon/Compression/LZMA.h"
-#include "PaperCommon/Util/IO.h"
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
 
 namespace paper
 {
-	std::vector<std::shared_ptr<QRCode>> encode(const std::string &path)
+	namespace util
 	{
-		// Load the contents of the given file.
-
-		std::shared_ptr<uint8_t> buf(nullptr);
-		std::size_t bufSize = util::io::loadFile(buf, path);
-
-		// Compress the given file's contents.
-
+		/**
+		 * \brief This class provides an in-memory stream buffer.
+		 *
+		 * This is very similar to e.g. std::stringstream, except it is
+		 * designed to be more convenient to write binary data to, and
+		 * it provides direct access to its internal buffer pointer.
+		 */
+		class Memstream
 		{
-			std::shared_ptr<uint8_t> compressed;
-			std::size_t compressedSize = compression::lzmaCompress(
-				compressed, buf.get(), bufSize);
-			buf = compressed;
-			bufSize = compressedSize;
-		}
+		public:
+			Memstream();
+			~Memstream();
 
+			std::size_t write(const uint8_t *, std::size_t);
+			void flush();
 
+			std::size_t getSize() const;
+			const uint8_t *getBuffer() const;
 
-		return std::vector<std::shared_ptr<QRCode>>();
+		private:
+			uint8_t *buffer;
+			FILE *stream;
+			std::size_t size;
+
+			Memstream(const Memstream &);
+			Memstream &operator=(const Memstream &);
+
+			void cleanup();
+		};
 	}
 }
+
+#endif
