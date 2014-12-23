@@ -63,7 +63,22 @@ set(Paper_LIBS
 
 )
 
+# Add in libvrfy, if applicable.
+
+set(ENABLE_UNIT_TESTS FALSE)
+
+if(CMAKE_BUILD_TYPE_LOWER MATCHES debug)
+	if(UNIX)
+		set(ENABLE_UNIT_TESTS TRUE)
+		add_subdirectory(vrfy)
+	endif()
+endif()
+
 # Add the various targets.
 
 add_subdirectory(src/PaperCommon)
 add_subdirectory(src/PaperCLI)
+
+if(ENABLE_UNIT_TESTS)
+	add_subdirectory(src/PaperTests)
+endif()
