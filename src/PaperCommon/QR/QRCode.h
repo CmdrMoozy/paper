@@ -16,13 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PAPER_QRCODE_H
-#define PAPER_QRCODE_H
+#ifndef PAPER_QR_QRCODE_H
+#define PAPER_QR_QRCODE_H
 
 #include <cstdint>
 #include <cstddef>
 
 namespace paper
+{
+namespace qr
 {
 /**
  * \brief This class denotes a single QR code image.
@@ -36,6 +38,7 @@ private:
 	QRCode(const QRCode &);
 	QRCode &operator=(const QRCode &);
 };
+}
 }
 
 #endif

@@ -2,11 +2,12 @@ set(PaperCommon_SOURCES
 
 	Functionality.cpp
 	Functionality.h
-	QRCode.cpp
-	QRCode.h
 
 	Compression/LZMA.cpp
 	Compression/LZMA.h
+
+	QR/QRCode.cpp
+	QR/QRCode.h
 
 	Util/IO.cpp
 	Util/IO.h

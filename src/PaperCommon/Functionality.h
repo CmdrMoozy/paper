@@ -23,11 +23,11 @@
 #include <string>
 #include <vector>
 
-#include "PaperCommon/QRCode.h"
+#include "PaperCommon/QR/QRCode.h"
 
 namespace paper
 {
-std::vector<std::shared_ptr<QRCode>> encode(const std::string &);
+std::vector<std::shared_ptr<qr::QRCode>> encode(const std::string &);
 }
 
 #endif

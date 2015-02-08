@@ -32,7 +32,7 @@
 #include <QTimer>
 
 #include "PaperCommon/Functionality.h"
-#include "PaperCommon/QRCode.h"
+#include "PaperCommon/QR/QRCode.h"
 
 namespace
 {
@@ -60,7 +60,7 @@ void exportCommand(std::size_t argc, QStringList::const_iterator argit,
 
 	QString path = *(argit++);
 
-	std::vector<std::shared_ptr<paper::QRCode>> qrcode(
+	std::vector<std::shared_ptr<paper::qr::QRCode>> qrcode(
 	        paper::encode(path.toStdString()));
 }
 }
