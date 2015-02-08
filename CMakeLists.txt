@@ -25,10 +25,10 @@ endif()
 
 string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
 
-# Set compiler flags.
+# Setup compile flags.
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/Warnings.cmake)
-paperEnableWarnings()
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/SetFlags.cmake)
+paperSetCompileFlags()
 
 if(CMAKE_BUILD_TYPE_LOWER MATCHES debug)
 	add_definitions(-DPAPER_DEBUG)
