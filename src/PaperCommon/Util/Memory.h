@@ -16,21 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PAPER_COMPRESSION_LZMA_H
-#define PAPER_COMPRESSION_LZMA_H
+#ifndef PAPER_UTIL_MEMORY_H
+#define PAPER_UTIL_MEMORY_H
 
 #include <cstddef>
-#include <cstdint>
 #include <memory>
 
 namespace paper
 {
-namespace compression
+namespace util
 {
-std::size_t lzmaCompress(std::shared_ptr<uint8_t> &, const uint8_t *,
-                         std::size_t);
-std::size_t lzmaDecompress(std::shared_ptr<uint8_t> &, const uint8_t *,
-                           std::size_t);
+/**
+ * This is a basic utility which will allocate a new shared
+ * array with an appropriate deleter to ensure that the memory
+ * is properly freed on destruction.
+ *
+ * Note: if the caller wants to later reset() this pointer, it
+ * is up to that caller to use an appropriate deleter.
+ *
+ * \param size The size of the array to allocate.
+ * \return A shared pointer containing the requested array.
+ */
+template <typename T> std::shared_ptr<T> makeSharedArray(std::size_t size)
+{
+	auto deleter = [](const T *p)
+	{
+		delete[] p;
+	};
+
+	return std::shared_ptr<T>(new T[size], deleter);
+}
 }
 }
 

@@ -10,6 +10,7 @@ set(PaperCommon_SOURCES
 
 	Util/IO.cpp
 	Util/IO.h
+	Util/Memory.h
 	Util/Memstream.cpp
 	Util/Memstream.h
 

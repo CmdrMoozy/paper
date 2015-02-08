@@ -25,38 +25,45 @@
 
 namespace paper
 {
-	namespace util
-	{
-		/**
-		 * \brief This class provides an in-memory stream buffer.
-		 *
-		 * This is very similar to e.g. std::stringstream, except it is
-		 * designed to be more convenient to write binary data to, and
-		 * it provides direct access to its internal buffer pointer.
-		 */
-		class Memstream
-		{
-		public:
-			Memstream();
-			~Memstream();
+namespace util
+{
+/**
+ * \brief This class provides an in-memory stream buffer.
+ *
+ * This is very similar to e.g. std::stringstream, except it is
+ * designed to be more convenient to write binary data to, and
+ * it provides direct access to its internal buffer pointer.
+ *
+ * NOTE: In order to prevent users from having to copy our
+ * buffer contents, we DO NOT DELETE THE BUFFER IN OUR
+ * DESTRUCTOR. This means that it is up to our users to call
+ * free() on getBuffer()'s returned pointer
+ */
+class Memstream
+{
+public:
+	Memstream();
+	~Memstream();
 
-			std::size_t write(const uint8_t *, std::size_t);
-			void flush();
+	std::size_t write(const uint8_t *, std::size_t);
+	void flush();
 
-			std::size_t getSize() const;
-			const uint8_t *getBuffer() const;
+	std::size_t getSize() const;
+	uint8_t *getBuffer();
 
-		private:
-			uint8_t *buffer;
-			FILE *stream;
-			std::size_t size;
+	FILE *getFile();
 
-			Memstream(const Memstream &);
-			Memstream &operator=(const Memstream &);
+private:
+	uint8_t *buffer;
+	FILE *stream;
+	std::size_t size;
 
-			void cleanup();
-		};
-	}
+	Memstream(const Memstream &);
+	Memstream &operator=(const Memstream &);
+
+	void cleanup();
+};
+}
 }
 
 #endif

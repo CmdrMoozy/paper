@@ -27,11 +27,10 @@
  * This constructor creates a new memory stream instance. This stream is
  * automatically opened and made ready for writing.
  */
-paper::util::Memstream::Memstream()
-	: buffer(nullptr), stream(nullptr), size(0)
+paper::util::Memstream::Memstream() : buffer(nullptr), stream(nullptr), size(0)
 {
 	static_assert(sizeof(char) == sizeof(uint8_t),
-		"For Memstream, char must be 8 bits long.");
+	              "For Memstream, char must be 8 bits long.");
 
 	stream = open_memstream(reinterpret_cast<char **>(&buffer), &size);
 
@@ -57,8 +56,8 @@ paper::util::Memstream::~Memstream()
  * \param length The length of the data, bytes.
  * \return The number of bytes written.
  */
-std::size_t paper::util::Memstream::write(
-	const uint8_t *data, std::size_t length)
+std::size_t paper::util::Memstream::write(const uint8_t *data,
+                                          std::size_t length)
 {
 	return fwrite(data, sizeof(uint8_t), length, stream);
 }
@@ -90,13 +89,29 @@ std::size_t paper::util::Memstream::getSize() const
  * that has been written so far. This buffer contains getSize() bytes of data,
  * and it is additionally null terminated.
  *
- * Note that the returned pointer is only valid for the life of this object.
+ * Note that there are some caveats about the returned pointer. First, for the
+ * pointer to be valid flush() must be called, which means that this function
+ * must be non-const. Second, the returned pointer is ONLY valid until the next
+ * time data is written to this object, since adding data to the buffer may
+ * cause it to be reallocated.
  *
  * \return This memory stream's internal buffer pointer.
  */
-const uint8_t *paper::util::Memstream::getBuffer() const
+uint8_t *paper::util::Memstream::getBuffer()
 {
+	flush();
 	return buffer;
+}
+
+/**
+ * This function returns this memstream's internal file pointer. This can be
+ * used to perform low-level operations with this stream's buffer.
+ *
+ * \return This memstream's internal file pointer.
+ */
+FILE *paper::util::Memstream::getFile()
+{
+	return stream;
 }
 
 /**
@@ -109,11 +124,5 @@ void paper::util::Memstream::cleanup()
 	{
 		fclose(stream);
 		stream = nullptr;
-	}
-
-	if(buffer != nullptr)
-	{
-		free(buffer);
-		buffer = nullptr;
 	}
 }
