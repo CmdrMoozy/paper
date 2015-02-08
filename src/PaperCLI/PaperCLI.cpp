@@ -41,7 +41,7 @@ void printGlobalHelp()
 	std::cout << "Usage: PaperCLI [command] [options]\n\n";
 
 	std::cout << "Commands:\n";
-	std::cout << "\tencode - Create a QR code containing data.\n";
+	std::cout << "\texport - Create a QR code containing data.\n";
 }
 
 void exportCommand(std::size_t argc, QStringList::const_iterator argit,

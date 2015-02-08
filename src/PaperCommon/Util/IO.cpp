@@ -19,13 +19,15 @@
 #include "IO.h"
 
 #include <cerrno>
+#include <cstdio>
 #include <cstring>
-#include <fstream>
 #include <stdexcept>
 
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#include "PaperCommon/Util/Memory.h"
 
 /**
  * This function returns the size of the file denoted by the given path, in
@@ -41,9 +43,7 @@ std::size_t paper::util::io::filesize(const std::string &path)
 	int r = stat(path.c_str(), &s);
 
 	if(r != 0)
-	{
 		throw std::runtime_error(strerror(errno));
-	}
 
 	return static_cast<size_t>(s.st_size);
 }
@@ -61,19 +61,16 @@ std::size_t paper::util::io::filesize(const std::string &path)
 std::size_t paper::util::io::loadFile(std::shared_ptr<uint8_t> &buf,
                                       const std::string &path)
 {
-	std::basic_ifstream<uint8_t> in(
-	        path.c_str(), std::ios_base::binary | std::ios_base::in);
+	FILE *in = fopen(path.c_str(), "rb");
+	if(in == nullptr)
+		throw std::runtime_error(strerror(errno));
 
-	if(!(in.is_open() && in.good()))
-		throw std::runtime_error("Reading file contents failed.");
+	std::size_t size = filesize(path);
+	buf = makeSharedArray<uint8_t>(size);
 
-	std::size_t size = paper::util::io::filesize(path);
-	buf.reset(new uint8_t[size], [](uint8_t *p)
-	          {
-		delete[] p;
-	});
-
-	in.read(buf.get(), static_cast<std::streamsize>(size));
+	std::size_t read = fread(buf.get(), sizeof(uint8_t), size, in);
+	if(read != size)
+		throw std::runtime_error("Error reading file contents.");
 
 	return size;
 }
