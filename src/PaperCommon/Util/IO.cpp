@@ -42,8 +42,7 @@ std::size_t paper::util::io::filesize(const std::string &path)
 
 	if(r != 0)
 	{
-		throw std::runtime_error(
-			strerror(errno));
+		throw std::runtime_error(strerror(errno));
 	}
 
 	return static_cast<size_t>(s.st_size);
@@ -60,20 +59,19 @@ std::size_t paper::util::io::filesize(const std::string &path)
  * \return The size of the loaded buffer, in bytes.
  */
 std::size_t paper::util::io::loadFile(std::shared_ptr<uint8_t> &buf,
-	const std::string &path)
+                                      const std::string &path)
 {
-	std::basic_ifstream<uint8_t> in(path.c_str(),
-		std::ios_base::binary | std::ios_base::in);
+	std::basic_ifstream<uint8_t> in(
+	        path.c_str(), std::ios_base::binary | std::ios_base::in);
 
 	if(!(in.is_open() && in.good()))
 		throw std::runtime_error("Reading file contents failed.");
 
 	std::size_t size = paper::util::io::filesize(path);
-	buf.reset(new uint8_t[size],
-		[](uint8_t *p)
-		{
-			delete[] p;
-		});
+	buf.reset(new uint8_t[size], [](uint8_t *p)
+	          {
+		delete[] p;
+	});
 
 	in.read(buf.get(), static_cast<std::streamsize>(size));
 

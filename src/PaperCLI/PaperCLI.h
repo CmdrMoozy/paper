@@ -23,23 +23,23 @@
 
 namespace papercli
 {
-	class PaperCLI : public QObject
-	{
-		Q_OBJECT
+class PaperCLI : public QObject
+{
+	Q_OBJECT
 
-	public:
-		PaperCLI();
+public:
+	PaperCLI();
 
-	private:
-		PaperCLI(const PaperCLI &);
-		PaperCLI &operator=(const PaperCLI &);
+private:
+	PaperCLI(const PaperCLI &);
+	PaperCLI &operator=(const PaperCLI &);
 
-	public Q_SLOTS:
-		void run();
+public Q_SLOTS:
+	void run();
 
-	Q_SIGNALS:
-		void finished();
-	};
+Q_SIGNALS:
+	void finished();
+};
 }
 
 #endif

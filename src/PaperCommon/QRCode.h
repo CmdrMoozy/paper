@@ -24,18 +24,18 @@
 
 namespace paper
 {
-	/**
-	 * \brief This class denotes a single QR code image.
-	 */
-	class QRCode
-	{
-	public:
-		QRCode(const uint8_t *, std::size_t);
+/**
+ * \brief This class denotes a single QR code image.
+ */
+class QRCode
+{
+public:
+	QRCode(const uint8_t *, std::size_t);
 
-	private:
-		QRCode(const QRCode &);
-		QRCode &operator=(const QRCode &);
-	};
+private:
+	QRCode(const QRCode &);
+	QRCode &operator=(const QRCode &);
+};
 }
 
 #endif

@@ -36,79 +36,77 @@
 
 namespace
 {
-	void printGlobalHelp()
-	{
-		std::cout << "Usage: PaperCLI [command] [options]\n\n";
+void printGlobalHelp()
+{
+	std::cout << "Usage: PaperCLI [command] [options]\n\n";
 
-		std::cout << "Commands:\n";
-		std::cout << "\tencode - Create a QR code containing data.\n";
+	std::cout << "Commands:\n";
+	std::cout << "\tencode - Create a QR code containing data.\n";
+}
+
+void exportCommand(std::size_t argc, QStringList::const_iterator argit,
+                   QStringList::const_iterator)
+{
+	if(argc < 1)
+	{
+		std::cout << "Usage: PaperCLI export [file]\n\n";
+
+		std::cout << "Options:\n";
+		std::cout << "\t[file] - The path to the file to "
+		          << "encode.\n";
+
+		return;
 	}
 
-	void exportCommand(std::size_t argc, QStringList::const_iterator argit,
-		QStringList::const_iterator)
-	{
-		if(argc < 1)
-		{
-			std::cout << "Usage: PaperCLI export [file]\n\n";
+	QString path = *(argit++);
 
-			std::cout << "Options:\n";
-			std::cout << "\t[file] - The path to the file to " <<
-				"encode.\n";
-
-			return;
-		}
-
-		QString path = *(argit++);
-
-		std::vector<std::shared_ptr<paper::QRCode>> qrcode(
-			paper::encode(path.toStdString()));
-	}
+	std::vector<std::shared_ptr<paper::QRCode>> qrcode(
+	        paper::encode(path.toStdString()));
+}
 }
 
 namespace papercli
 {
-	PaperCLI::PaperCLI()
-		: QObject()
+PaperCLI::PaperCLI() : QObject()
+{
+}
+
+void PaperCLI::run()
+{
+	try
 	{
+		QStringList args = qApp->arguments();
+
+		if(args.length() < 2)
+		{
+			printGlobalHelp();
+
+			Q_EMIT finished();
+			return;
+		}
+
+		if(args.at(1) == "export")
+		{
+			exportCommand(static_cast<size_t>(args.length() - 2),
+			              args.cbegin() + 2, args.cend());
+		}
+		else
+		{
+			printGlobalHelp();
+		}
+	}
+	catch(std::exception &e)
+	{
+		std::cerr << "Exception: " << e.what() << "\n";
+	}
+	catch(...)
+	{
+		std::cerr << "Exception: Unknown error.\n";
 	}
 
-	void PaperCLI::run()
-	{
-		try
-		{
-			QStringList args = qApp->arguments();
-
-			if(args.length() < 2)
-			{
-				printGlobalHelp();
-
-				Q_EMIT finished();
-				return;
-			}
-
-			if(args.at(1) == "export")
-			{
-				exportCommand(static_cast<size_t>(
-					args.length() - 2),
-					args.cbegin() + 2, args.cend());
-			}
-			else
-			{
-				printGlobalHelp();
-			}
-		}
-		catch(std::exception &e)
-		{
-			std::cerr << "Exception: " << e.what() << "\n";
-		}
-		catch(...)
-		{
-			std::cerr << "Exception: Unknown error.\n";
-		}
-
-		Q_EMIT finished();
-		return;
-	}
+	Q_EMIT finished();
+	return;
+}
 }
 
 int main(int argc, char **argv)
@@ -117,8 +115,7 @@ int main(int argc, char **argv)
 
 	papercli::PaperCLI exe;
 
-	QObject::connect(&exe, SIGNAL(finished()),
-		&app, SLOT(quit()));
+	QObject::connect(&exe, SIGNAL(finished()), &app, SLOT(quit()));
 
 	QTimer::singleShot(1, &exe, SLOT(run()));
 

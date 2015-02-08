@@ -23,20 +23,20 @@
 
 namespace paper
 {
-	namespace tests
-	{
-		/**
-		 * \brief This class implements various compression unit tests.
-		 */
-		class CompressionTest : public vrfy::Test
-		{
-		public:
-			CompressionTest();
-			virtual ~CompressionTest();
+namespace tests
+{
+/**
+ * \brief This class implements various compression unit tests.
+ */
+class CompressionTest : public vrfy::Test
+{
+public:
+	CompressionTest();
+	virtual ~CompressionTest();
 
-			virtual void test();
-		};
-	}
+	virtual void test();
+};
+}
 }
 
 #endif

@@ -23,25 +23,23 @@
 
 namespace paper
 {
-	std::vector<std::shared_ptr<QRCode>> encode(const std::string &path)
+std::vector<std::shared_ptr<QRCode>> encode(const std::string &path)
+{
+	// Load the contents of the given file.
+
+	std::shared_ptr<uint8_t> buf(nullptr);
+	std::size_t bufSize = util::io::loadFile(buf, path);
+
+	// Compress the given file's contents.
+
 	{
-		// Load the contents of the given file.
-
-		std::shared_ptr<uint8_t> buf(nullptr);
-		std::size_t bufSize = util::io::loadFile(buf, path);
-
-		// Compress the given file's contents.
-
-		{
-			std::shared_ptr<uint8_t> compressed;
-			std::size_t compressedSize = compression::lzmaCompress(
-				compressed, buf.get(), bufSize);
-			buf = compressed;
-			bufSize = compressedSize;
-		}
-
-
-
-		return std::vector<std::shared_ptr<QRCode>>();
+		std::shared_ptr<uint8_t> compressed;
+		std::size_t compressedSize = compression::lzmaCompress(
+		        compressed, buf.get(), bufSize);
+		buf = compressed;
+		bufSize = compressedSize;
 	}
+
+	return std::vector<std::shared_ptr<QRCode>>();
+}
 }

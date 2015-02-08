@@ -23,7 +23,7 @@
 
 namespace paper
 {
-	QRCode::QRCode(const uint8_t *, std::size_t)
-	{
-	}
+QRCode::QRCode(const uint8_t *, std::size_t)
+{
+}
 }

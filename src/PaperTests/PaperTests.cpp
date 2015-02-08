@@ -25,6 +25,5 @@ int main(int, char **)
 	using namespace paper::tests;
 
 	vrfy::Tests tests;
-	tests.add<CompressionTest>()
-		.execute();
+	tests.add<CompressionTest>().execute();
 }

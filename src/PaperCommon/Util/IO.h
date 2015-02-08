@@ -26,15 +26,14 @@
 
 namespace paper
 {
-	namespace util
-	{
-		namespace io
-		{
-			std::size_t filesize(const std::string &);
-			std::size_t loadFile(std::shared_ptr<uint8_t> &,
-				const std::string &);
-		}
-	}
+namespace util
+{
+namespace io
+{
+std::size_t filesize(const std::string &);
+std::size_t loadFile(std::shared_ptr<uint8_t> &, const std::string &);
+}
+}
 }
 
 #endif

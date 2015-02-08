@@ -27,7 +27,7 @@
 
 namespace paper
 {
-	std::vector<std::shared_ptr<QRCode>> encode(const std::string &);
+std::vector<std::shared_ptr<QRCode>> encode(const std::string &);
 }
 
 #endif
