@@ -23,10 +23,6 @@
 #include <cstring>
 #include <stdexcept>
 
-/**
- * This constructor creates a new memory stream instance. This stream is
- * automatically opened and made ready for writing.
- */
 paper::util::Memstream::Memstream() : buffer(nullptr), stream(nullptr), size(0)
 {
 	static_assert(sizeof(char) == sizeof(uint8_t),
@@ -35,37 +31,24 @@ paper::util::Memstream::Memstream() : buffer(nullptr), stream(nullptr), size(0)
 	stream = open_memstream(reinterpret_cast<char **>(&buffer), &size);
 
 	if(stream == nullptr)
-	{
-		cleanup();
 		throw std::runtime_error(strerror(errno));
+}
+
+paper::util::Memstream::~Memstream()
+{
+	if(stream != nullptr)
+	{
+		fclose(stream);
+		stream = nullptr;
 	}
 }
 
-/**
- * This destructor cleans up our memory stream, freeing all memory.
- */
-paper::util::Memstream::~Memstream()
-{
-	cleanup();
-}
-
-/**
- * This function writes the given data to the buffer.
- *
- * \param data The data to write to the buffer.
- * \param length The length of the data, bytes.
- * \return The number of bytes written.
- */
 std::size_t paper::util::Memstream::write(const uint8_t *data,
                                           std::size_t length)
 {
 	return fwrite(data, sizeof(uint8_t), length, stream);
 }
 
-/**
- * This function flushes any outstanding writes to our buffer. If this results
- * in an error, then an exception will be thrown instead.
- */
 void paper::util::Memstream::flush()
 {
 	int r = fflush(stream);
@@ -74,55 +57,18 @@ void paper::util::Memstream::flush()
 		throw std::runtime_error(strerror(errno));
 }
 
-/**
- * This function returns the current size of the buffer contents, in bytes.
- *
- * \return The size of the buffer.
- */
 std::size_t paper::util::Memstream::getSize() const
 {
 	return size;
 }
 
-/**
- * This function return a pointer to the buffer which contains all of the data
- * that has been written so far. This buffer contains getSize() bytes of data,
- * and it is additionally null terminated.
- *
- * Note that there are some caveats about the returned pointer. First, for the
- * pointer to be valid flush() must be called, which means that this function
- * must be non-const. Second, the returned pointer is ONLY valid until the next
- * time data is written to this object, since adding data to the buffer may
- * cause it to be reallocated.
- *
- * \return This memory stream's internal buffer pointer.
- */
 uint8_t *paper::util::Memstream::getBuffer()
 {
 	flush();
 	return buffer;
 }
 
-/**
- * This function returns this memstream's internal file pointer. This can be
- * used to perform low-level operations with this stream's buffer.
- *
- * \return This memstream's internal file pointer.
- */
 FILE *paper::util::Memstream::getFile()
 {
 	return stream;
-}
-
-/**
- * This function cleans up our memory stream by closing any open streams, and
- * by freeing all allocated memory.
- */
-void paper::util::Memstream::cleanup()
-{
-	if(stream != nullptr)
-	{
-		fclose(stream);
-		stream = nullptr;
-	}
 }

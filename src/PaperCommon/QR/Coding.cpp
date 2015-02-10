@@ -24,15 +24,6 @@ namespace paper
 {
 namespace qr
 {
-/**
- * This function encodes all of the given data into one or more QR codes. The
- * QR codes produced will be minimal (in number and then in size) in order to
- * store all of the given data.
- *
- * \param data The data to encode.
- * \param size The size of the given data buffer.
- * \return The set of encoded QR codes.
- */
 std::vector<std::shared_ptr<QRCode>> encode(uint8_t *data, std::size_t size)
 {
 	// Determine how many QR codes we'll need, by rounding up division.

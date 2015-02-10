@@ -31,9 +31,22 @@ namespace tests
 class CompressionTest : public vrfy::Test
 {
 public:
+	/**
+	 * This is our default constructor, which creates a new instance of our
+	 * compression tests.
+	 */
 	CompressionTest();
+
+	/**
+	 * This is our default destructor, which cleans up & destroys this
+	 * object.
+	 */
 	virtual ~CompressionTest();
 
+	/**
+	 * This function provides the main entrypoint for this class's unit
+	 * tests.
+	 */
 	virtual void test();
 };
 }

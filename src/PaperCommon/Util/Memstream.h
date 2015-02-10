@@ -42,15 +42,62 @@ namespace util
 class Memstream
 {
 public:
+	/**
+	 * This constructor creates a new memory stream instance. This stream
+	 * is automatically opened and made ready for writing.
+	 */
 	Memstream();
+
+	/**
+	 * This destructor cleans up our memory stream, freeing all memory.
+	 */
 	~Memstream();
 
-	std::size_t write(const uint8_t *, std::size_t);
+	/**
+	 * This function writes the given data to the buffer.
+	 *
+	 * \param data The data to write to the buffer.
+	 * \param length The length of the data, bytes.
+	 * \return The number of bytes written.
+	 */
+	std::size_t write(const uint8_t *data, std::size_t length);
+
+	/**
+	 * This function flushes any outstanding writes to our buffer. If this
+	 * results in an error, then an exception will be thrown instead.
+	 */
 	void flush();
 
+	/**
+	 * This function returns the current size of the buffer contents, in
+	 * bytes.
+	 *
+	 * \return The size of the buffer.
+	 */
 	std::size_t getSize() const;
+
+	/**
+	 * This function return a pointer to the buffer which contains all of
+	 * the data that has been written so far. This buffer contains
+	 * getSize() bytes of data, and it is additionally null terminated.
+	 *
+	 * Note that there are some caveats about the returned pointer. First,
+	 * for the pointer to be valid flush() must be called, which means that
+	 * this function must be non-const. Second, the returned pointer is
+	 * ONLY valid until the next time data is written to this object, since
+	 * adding data to the buffer may cause it to be reallocated.
+	 *
+	 * \return This memory stream's internal buffer pointer.
+	 */
 	uint8_t *getBuffer();
 
+	/**
+	 * This function returns this memstream's internal file pointer. This
+	 * can be used to perform low-level operations with this stream's
+	 * buffer.
+	 *
+	 * \return This memstream's internal file pointer.
+	 */
 	FILE *getFile();
 
 private:
@@ -60,8 +107,6 @@ private:
 
 	Memstream(const Memstream &);
 	Memstream &operator=(const Memstream &);
-
-	void cleanup();
 };
 }
 }

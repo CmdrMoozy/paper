@@ -27,10 +27,29 @@ namespace paper
 {
 namespace compression
 {
-std::size_t lzmaCompress(std::shared_ptr<uint8_t> &, const uint8_t *,
-                         std::size_t);
-std::size_t lzmaDecompress(std::shared_ptr<uint8_t> &, const uint8_t *,
-                           std::size_t);
+/**
+ * This function compresses the given data, placing the result in the given
+ * shared pointer and returning the size of the compressed result.
+ *
+ * \param dst The shared pointer to store the result inside.
+ * \param src The buffer containing the data to compress.
+ * \param srcSize The length of the input buffer.
+ * \return The size of the result buffer.
+ */
+std::size_t lzmaCompress(std::shared_ptr<uint8_t> &dst, const uint8_t *src,
+                         std::size_t srcSize);
+
+/**
+ * This function decompresses the given data, placing the result in the given
+ * shared pointer and returning the size of the decompressed result.
+ *
+ * \param dst The shared pointer to store the result inside.
+ * \param src The bufer containing the data to decompress.
+ * \param srcSize The length of the input buffer.
+ * \return The size of the result buffer.
+ */
+std::size_t lzmaDecompress(std::shared_ptr<uint8_t> &dst, const uint8_t *src,
+                           std::size_t srcSize);
 }
 }
 

@@ -30,8 +30,27 @@ namespace util
 {
 namespace io
 {
-std::size_t filesize(const std::string &);
-std::size_t loadFile(std::shared_ptr<uint8_t> &, const std::string &);
+/**
+ * This function returns the size of the file denoted by the given path, in
+ * bytes. If the file doesn't exist, or some error occurs, then an exception
+ * will be thrown.
+ *
+ * \param path The path to the file to inspect.
+ * \return The size of the given file, in bytes.
+ */
+std::size_t filesize(const std::string &path);
+
+/**
+ * This function loads all of the contents of the file denoted by the given
+ * path into memory. The contents will be stored in an array of uint8_t's,
+ * which will be placed in the given shared_ptr instance. Any existing contents
+ * of the given shared_ptr will be reset().
+ *
+ * \param buf The shared_ptr to store a pointer to the buffer in.
+ * \param path The path to the file to read.
+ * \return The size of the loaded buffer, in bytes.
+ */
+std::size_t loadFile(std::shared_ptr<uint8_t> &buf, const std::string &path);
 }
 }
 }

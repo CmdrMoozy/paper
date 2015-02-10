@@ -276,15 +276,6 @@ std::size_t lzma(bool compress, std::shared_ptr<uint8_t> &dst,
 }
 }
 
-/**
- * This function compresses the given data, placing the result in the given
- * shared pointer and returning the size of the compressed result.
- *
- * \param dst The shared pointer to store the result inside.
- * \param src The buffer containing the data to compress.
- * \param srcSize The length of the input buffer.
- * \return The size of the result buffer.
- */
 std::size_t paper::compression::lzmaCompress(std::shared_ptr<uint8_t> &dst,
                                              const uint8_t *src,
                                              std::size_t srcSize)
@@ -292,15 +283,6 @@ std::size_t paper::compression::lzmaCompress(std::shared_ptr<uint8_t> &dst,
 	return lzma(true, dst, src, srcSize);
 }
 
-/**
- * This function decompresses the given data, placing the result in the given
- * shared pointer and returning the size of the decompressed result.
- *
- * \param dst The shared pointer to store the result inside.
- * \param src The bufer containing the data to decompress.
- * \param srcSize The length of the input buffer.
- * \return The size of the result buffer.
- */
 std::size_t paper::compression::lzmaDecompress(std::shared_ptr<uint8_t> &dst,
                                                const uint8_t *src,
                                                std::size_t srcSize)

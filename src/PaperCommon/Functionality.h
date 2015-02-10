@@ -27,7 +27,14 @@
 
 namespace paper
 {
-std::vector<std::shared_ptr<qr::QRCode>> encode(const std::string &);
+/**
+ * This function will encode the contents of the given file as a minimal set
+ * of QR codes. If some error occurs, an appropriate exception will be thrown.
+ *
+ * \param path The path to the file to encode.
+ * \return The set of QR codes containing the file's data.
+ */
+std::vector<std::shared_ptr<qr::QRCode>> encode(const std::string &path);
 }
 
 #endif

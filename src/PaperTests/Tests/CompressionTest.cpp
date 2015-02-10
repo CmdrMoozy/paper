@@ -91,26 +91,14 @@ namespace paper
 {
 namespace tests
 {
-/**
- * This is our default constructor, which creates a new
- * instance of our compression tests.
- */
 CompressionTest::CompressionTest() : vrfy::Test()
 {
 }
 
-/**
- * This is our default destructor, which cleans up & destroys
- * this object.
- */
 CompressionTest::~CompressionTest()
 {
 }
 
-/**
- * This function provides the main entrypoint for this class's
- * unit tests.
- */
 void CompressionTest::test()
 {
 	using namespace compression;
