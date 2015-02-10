@@ -16,54 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PAPER_QR_QRCODE_H
-#define PAPER_QR_QRCODE_H
+#ifndef PAPER_QR_CODING_H
+#define PAPER_QR_CODING_H
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
+#include <memory>
+#include <vector>
 
-#include <qrencode.h>
+#include "PaperCommon/QR/QRCode.h"
 
 namespace paper
 {
 namespace qr
 {
-/**
- * \brief This class denotes a single QR code image.
- */
-class QRCode
-{
-public:
-	/**
-	 * \brief This enumeration defines the QR code error correction levels.
-	 */
-	enum class ErrorCorrection
-	{
-		Low = 0,
-		Medium = 1,
-		Quartile = 2,
-		High = 3
-	};
-
-	QRCode(const uint8_t *, std::size_t, std::size_t);
-	~QRCode();
-
-	ErrorCorrection getErrorCorrection() const;
-	int getVersion() const;
-	std::size_t getWidth() const;
-
-	const uint8_t *getData() const;
-	bool getCellColor(std::size_t, std::size_t) const;
-
-private:
-	QRcode *code;
-
-	QRCode(const QRCode &);
-	QRCode &operator=(const QRCode &);
-};
-
-std::size_t getCapacity(int version, QRCode::ErrorCorrection errorCorrection);
-std::size_t getMaximumCapacity();
+std::vector<std::shared_ptr<QRCode>> encode(uint8_t *, std::size_t);
 }
 }
 

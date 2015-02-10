@@ -19,6 +19,7 @@
 #include "Functionality.h"
 
 #include "PaperCommon/Compression/LZMA.h"
+#include "PaperCommon/QR/Coding.h"
 #include "PaperCommon/Util/IO.h"
 
 namespace paper
@@ -40,6 +41,11 @@ std::vector<std::shared_ptr<qr::QRCode>> encode(const std::string &path)
 		bufSize = compressedSize;
 	}
 
-	return std::vector<std::shared_ptr<qr::QRCode>>();
+	// Encode some QR codes containing the input data.
+
+	std::vector<std::shared_ptr<qr::QRCode>> codes(
+	        qr::encode(buf.get(), bufSize));
+
+	return codes;
 }
 }

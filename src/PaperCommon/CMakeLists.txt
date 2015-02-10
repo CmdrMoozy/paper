@@ -6,6 +6,8 @@ set(PaperCommon_SOURCES
 	Compression/LZMA.cpp
 	Compression/LZMA.h
 
+	QR/Coding.cpp
+	QR/Coding.h
 	QR/QRCode.cpp
 	QR/QRCode.h
 
