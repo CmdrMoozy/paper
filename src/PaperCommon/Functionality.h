@@ -35,6 +35,18 @@ namespace paper
  * \return The set of QR codes containing the file's data.
  */
 std::vector<std::shared_ptr<qr::QRCode>> encode(const std::string &path);
+
+/**
+ * This function will render the given QR codes as SVG images, writing the
+ * resulting file(s) to the given output directory. The files will be named
+ * according to the given base file name.
+ *
+ * \param path The directory to write output files to.
+ * \param baseName The base name for each file.
+ * \param codes The set of QR codes to render.
+ */
+void renderSVGs(const std::string &path, const std::string &baseName,
+                const std::vector<std::shared_ptr<qr::QRCode>> &codes);
 }
 
 #endif

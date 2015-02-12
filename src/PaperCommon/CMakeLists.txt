@@ -11,6 +11,9 @@ set(PaperCommon_SOURCES
 	QR/QRCode.cpp
 	QR/QRCode.h
 
+	Render/SVG.cpp
+	Render/SVG.h
+
 	Util/IO.cpp
 	Util/IO.h
 	Util/Memory.h

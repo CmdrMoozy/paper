@@ -60,8 +60,10 @@ void exportCommand(std::size_t argc, QStringList::const_iterator argit,
 
 	QString path = *(argit++);
 
-	std::vector<std::shared_ptr<paper::qr::QRCode>> qrcode(
+	std::vector<std::shared_ptr<paper::qr::QRCode>> codes(
 	        paper::encode(path.toStdString()));
+
+	paper::renderSVGs("", "", codes);
 }
 }
 
