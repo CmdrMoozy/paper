@@ -63,6 +63,23 @@ std::string filename(const std::string &path);
  * \return The resulting full path.
  */
 std::string appendPath(const std::string &base, const std::string &a);
+
+/**
+ * This function returns whether or not the given path exists.
+ *
+ * \param p The path to test.
+ * \return True if the path exists, or false otherwise.
+ */
+bool exists(const std::string &p);
+
+/**
+ * This is a utility to create all of the directories necessary to ensure that
+ * the given directory exists. If an error occurs, an exception will be thrown
+ * instead.
+ *
+ * \param p The path to create.
+ */
+void mkpath(const std::string &p);
 }
 }
 }

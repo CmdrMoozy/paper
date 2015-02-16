@@ -103,6 +103,35 @@ std::string appendPath(const std::string &base, const std::string &a)
 
 	return ret + QDir::separator().toLatin1() + a;
 }
+
+bool exists(const std::string &p)
+{
+	std::string path(p);
+	normalize(path);
+	QFileInfo info(QString::fromStdString(path));
+	return info.exists();
+}
+
+void mkpath(const std::string &p)
+{
+	std::string path(p);
+	normalize(path);
+
+	QFileInfo info(QString::fromStdString(path));
+	if(info.exists())
+	{
+		if(!info.isDir())
+		{
+			throw std::runtime_error(
+			        "Path exists but isn't a directory.");
+		}
+
+		return;
+	}
+
+	if(!info.dir().mkpath(QString::fromStdString(path)))
+		throw std::runtime_error("Creating path failed.");
+}
 }
 }
 }

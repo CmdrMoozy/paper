@@ -18,6 +18,11 @@
 
 #include "Functionality.h"
 
+#include <functional>
+#include <memory>
+#include <stdexcept>
+#include <utility>
+
 #include <QDir>
 #include <QFileInfo>
 #include <QString>
@@ -27,8 +32,6 @@
 #include "PaperCommon/Render/SVG.h"
 #include "PaperCommon/Util/FS.h"
 #include "PaperCommon/Util/IO.h"
-
-#include <iostream>
 
 namespace paper
 {
@@ -62,12 +65,32 @@ void renderSVGs(const std::string &p, const std::string &b,
 	        QString::fromStdString(util::fs::appendPath(path, b)) +
 	        ".%1.svg");
 
-	int i = 1;
-	for(std::shared_ptr<qr::QRCode> code : codes)
+	auto getOutputPath = [&pathTemplate, &codes](int i) -> QString
 	{
-		render::SVG svg(*code);
-		QString outPath =
-		        pathTemplate.arg(i++, codes.size(), 10, QChar('0'));
+		return pathTemplate.arg(i + 1, codes.size(), 10, QChar('0'));
+	};
+
+	// Check that our output directory and output files are valid.
+
+	util::fs::mkpath(path);
+
+	for(int i = 0; i < static_cast<int>(codes.size()); ++i)
+	{
+		std::string outPath(getOutputPath(i).toStdString());
+		if(util::fs::exists(outPath))
+		{
+			throw std::runtime_error("File already exists: " +
+			                         outPath);
+		}
+	}
+
+	// Write each output file.
+
+	for(int i = 0; i < static_cast<int>(codes.size()); ++i)
+	{
+		render::SVG svg(*codes[static_cast<std::size_t>(i)]);
+		std::string outPath(getOutputPath(i).toStdString());
+		util::io::writeFile(outPath, svg.getData(), svg.getDataSize());
 	}
 }
 }
