@@ -14,6 +14,8 @@ set(PaperCommon_SOURCES
 	Render/SVG.cpp
 	Render/SVG.h
 
+	Util/FS.cpp
+	Util/FS.h
 	Util/IO.cpp
 	Util/IO.h
 	Util/Memory.h

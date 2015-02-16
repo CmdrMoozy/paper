@@ -41,11 +41,11 @@ std::vector<std::shared_ptr<qr::QRCode>> encode(const std::string &path);
  * resulting file(s) to the given output directory. The files will be named
  * according to the given base file name.
  *
- * \param path The directory to write output files to.
- * \param baseName The base name for each file.
+ * \param p The directory to write output files to.
+ * \param b The base name for each file.
  * \param codes The set of QR codes to render.
  */
-void renderSVGs(const std::string &path, const std::string &baseName,
+void renderSVGs(const std::string &p, const std::string &b,
                 const std::vector<std::shared_ptr<qr::QRCode>> &codes);
 }
 

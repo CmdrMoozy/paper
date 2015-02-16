@@ -18,10 +18,17 @@
 
 #include "Functionality.h"
 
+#include <QDir>
+#include <QFileInfo>
+#include <QString>
+
 #include "PaperCommon/Compression/LZMA.h"
 #include "PaperCommon/QR/Coding.h"
 #include "PaperCommon/Render/SVG.h"
+#include "PaperCommon/Util/FS.h"
 #include "PaperCommon/Util/IO.h"
+
+#include <iostream>
 
 namespace paper
 {
@@ -47,12 +54,20 @@ std::vector<std::shared_ptr<qr::QRCode>> encode(const std::string &path)
 	return qr::encode(buf.get(), bufSize);
 }
 
-void renderSVGs(const std::string &, const std::string &,
+void renderSVGs(const std::string &p, const std::string &b,
                 const std::vector<std::shared_ptr<qr::QRCode>> &codes)
 {
+	std::string path(util::fs::dirname(p));
+	QString pathTemplate(
+	        QString::fromStdString(util::fs::appendPath(path, b)) +
+	        ".%1.svg");
+
+	int i = 1;
 	for(std::shared_ptr<qr::QRCode> code : codes)
 	{
 		render::SVG svg(*code);
+		QString outPath =
+		        pathTemplate.arg(i++, codes.size(), 10, QChar('0'));
 	}
 }
 }

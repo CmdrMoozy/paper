@@ -51,6 +51,16 @@ std::size_t filesize(const std::string &path);
  * \return The size of the loaded buffer, in bytes.
  */
 std::size_t loadFile(std::shared_ptr<uint8_t> &buf, const std::string &path);
+
+/**
+ * This function writes all of the given data to the file denoted by the given
+ * path. Any existing contents of the given file will be overwritten.
+ *
+ * \param path The path to the file to write.
+ * \param data The data to write to the file.
+ * \param size The size of the given data buffer.
+ */
+void writeFile(const std::string &path, const char *data, std::size_t size);
 }
 }
 }

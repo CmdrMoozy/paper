@@ -18,10 +18,16 @@
 
 #include "IO.h"
 
+#include <algorithm>
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#include <functional>
+#include <sstream>
 #include <stdexcept>
+
+#include <QDir>
+#include <QFileInfo>
 
 #include <unistd.h>
 #include <sys/stat.h>
@@ -29,7 +35,13 @@
 
 #include "PaperCommon/Util/Memory.h"
 
-std::size_t paper::util::io::filesize(const std::string &path)
+namespace paper
+{
+namespace util
+{
+namespace io
+{
+std::size_t filesize(const std::string &path)
 {
 	struct stat s;
 	int r = stat(path.c_str(), &s);
@@ -40,8 +52,7 @@ std::size_t paper::util::io::filesize(const std::string &path)
 	return static_cast<size_t>(s.st_size);
 }
 
-std::size_t paper::util::io::loadFile(std::shared_ptr<uint8_t> &buf,
-                                      const std::string &path)
+std::size_t loadFile(std::shared_ptr<uint8_t> &buf, const std::string &path)
 {
 	FILE *in = fopen(path.c_str(), "rb");
 	if(in == nullptr)
@@ -54,5 +65,25 @@ std::size_t paper::util::io::loadFile(std::shared_ptr<uint8_t> &buf,
 	if(read != size)
 		throw std::runtime_error("Error reading file contents.");
 
+	if(fclose(in) != 0)
+		throw std::runtime_error(strerror(errno));
+
 	return size;
+}
+
+void writeFile(const std::string &path, const char *data, std::size_t size)
+{
+	FILE *out = fopen(path.c_str(), "wb");
+	if(out == nullptr)
+		throw std::runtime_error(strerror(errno));
+
+	std::size_t written = fwrite(data, sizeof(char), size, out);
+	if((written / sizeof(char)) != size)
+		throw std::runtime_error(strerror(errno));
+
+	if(fclose(out) != 0)
+		throw std::runtime_error(strerror(errno));
+}
+}
+}
 }

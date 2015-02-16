@@ -33,6 +33,7 @@
 
 #include "PaperCommon/Functionality.h"
 #include "PaperCommon/QR/QRCode.h"
+#include "PaperCommon/Util/FS.h"
 
 namespace
 {
@@ -63,7 +64,8 @@ void exportCommand(std::size_t argc, QStringList::const_iterator argit,
 	std::vector<std::shared_ptr<paper::qr::QRCode>> codes(
 	        paper::encode(path.toStdString()));
 
-	paper::renderSVGs("", "", codes);
+	paper::renderSVGs(paper::util::fs::dirname(path.toStdString()),
+	                  paper::util::fs::filename(path.toStdString()), codes);
 }
 }
 

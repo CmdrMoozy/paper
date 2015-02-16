@@ -119,6 +119,9 @@ QRCode::QRCode(const uint8_t *data, std::size_t offset, std::size_t size)
 		case ERANGE:
 			error = "Input data is too large.";
 			break;
+		default:
+			error = "Unknown error.";
+			break;
 		}
 		throw std::runtime_error(error);
 	}
